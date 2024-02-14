@@ -1,55 +1,57 @@
-#!/bin/bash
-
-# Обновление списка пакетов
-sudo apt-get update
-
-# Установка необходимых пакетов
-sudo apt-get install libcurl4-openssl-dev libssl-dev libjansson-dev automake autotools-dev build-essential wget -y
-
-# Добавление репозитория LLVM для Ubuntu 22.04 (jammy) и установка clang-16 и lld-16
-wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
-sudo add-apt-repository "deb http://apt.llvm.org/jammy/ llvm-toolchain-jammy-16 main"
-sudo apt-get update
-sudo apt-get install clang-16 lld-16 -y
-
-# Клонирование репозитория CCminer-ARM-optimized
-git clone https://github.com/Oink70/CCminer-ARM-optimized.git
-
-# Переход в каталог CCminer-ARM-optimized и установка прав на выполнение скриптов
-cd CCminer-ARM-optimized
-chmod +x build.sh configure.sh autogen.sh
-
-# Установка переменных окружения для clang и clang++
-export PATH="/usr/lib/llvm-16/bin:$PATH"
-export CC=clang-16
-export CXX=clang++-16
-
-# Проверка версий clang и clang++
-clang-16 --version
-clang++-16 --version
-
-# Конфигурация сборки с определенными флагами компиляции
-./configure CXXFLAGS="-Rpass-missed=loop-vectorize -Rpass-analysis=loop-vectorize -Wl,-hugetlbfs-align -funroll-loops -finline-functions -O3 -ffinite-loops -ffast-math -mfix-cortex-a53-835769 -D_REENTRANT -falign-functions=16 -fomit-frame-pointer -fpic -pthread -flto -fuse-ld=lld -fno-stack-protector -march=armv8-a+crypto -mtune=cortex-a53" CFLAGS="-finline-functions -Wl,-hugetlbfs-align -march=armv8-a+crypto -mtune=cortex-a53 -Rpass-missed=loop-vectorize -Rpass-analysis=loop-vectorize -O3 -ffinite-loops -ffast-math -mfix-cortex-a53-835769 -D_REENTRANT -falign-functions=16 -fomit-frame-pointer -fpic -pthread -flto -fuse-ld=lld -fno-stack-protector -mllvm -enable-loop-distribute" LDFLAGS="-v -flto -Wl,-hugetlbfs-align"
-
-# Компиляция и сборка проекта
-make
-
-if [ $? -eq 0 ]; then
-    echo "Компиляция успешно завершена."
-
-    # Запрос параметра от пользователя
-    read -p "Введите имя (ID): " name
-
-    # Формирование команды для запуска майнера
-    miner_cmd="nohup /root/CCminer-ARM-optimized/ccminer -o stratum+ssl://verushash.mine.zergpool.com:13300 -u RAWvyHh27WugEhegogyPTzBwASVz2Skk2Y -p c=VRSC,mc=VRSC,ID=${name} &"
-
-    # Запуск майнера
-    eval $miner_cmd
-
-    # Добавление задачи в cron для автоматического перезапуска майнера после перезагрузки
-    (crontab -l 2>/dev/null; echo "@reboot $miner_cmd") | crontab -
-
-    echo "Майнер установлен и будет автоматически запускаться после перезагрузки."
-else
-    echo "Произошла ошибка во время компиляции."
-fi
+	#!/bin/bash
+	
+	# Обновление списка пакетов
+	sudo apt-get update
+	
+	# Установка необходимых пакетов
+	sudo apt-get install libcurl4-openssl-dev libssl-dev libjansson-dev automake autotools-dev build-essential wget -y
+	
+	# Добавление репозитория LLVM для Ubuntu 22.04 (jammy) и установка clang-16 и lld-16
+	wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
+	sudo add-apt-repository "deb http://apt.llvm.org/jammy/ llvm-toolchain-jammy-16 main"
+	sudo apt-get update
+	sudo apt-get install clang-16 lld-16 -y
+	
+	# Клонирование репозитория CCminer-ARM-optimized
+	git clone https://github.com/Oink70/CCminer-ARM-optimized.git
+	
+	# Переход в каталог CCminer-ARM-optimized и установка прав на выполнение скриптов
+	cd CCminer-ARM-optimized
+	chmod +x build.sh configure.sh autogen.sh
+	
+	# Установка переменных окружения для clang и clang++
+	export PATH="/usr/lib/llvm-16/bin:$PATH"
+	export CC=clang-16
+	export CXX=clang++-16
+	
+	# Проверка версий clang и clang++
+	clang-16 --version
+	clang++-16 --version
+	
+	# Конфигурация сборки с определенными флагами компиляции
+	./configure CXXFLAGS="-Rpass-missed=loop-vectorize -Rpass-analysis=loop-vectorize -Wl,-hugetlbfs-align -funroll-loops -finline-functions -O3 -ffinite-loops -ffast-math -mfix-cortex-a53-835769 -D_REENTRANT -falign-functions=16 -fomit-frame-pointer -fpic -pthread -flto -fuse-ld=lld -fno-stack-protector -march=armv8-a+crypto -mtune=cortex-a53" CFLAGS="-finline-functions -Wl,-hugetlbfs-align -march=armv8-a+crypto -mtune=cortex-a53 -Rpass-missed=loop-vectorize -Rpass-analysis=loop-vectorize -O3 -ffinite-loops -ffast-math -mfix-cortex-a53-835769 -D_REENTRANT -falign-functions=16 -fomit-frame-pointer -fpic -pthread -flto -fuse-ld=lld -fno-stack-protector -mllvm -enable-loop-distribute" LDFLAGS="-v -flto -Wl,-hugetlbfs-align"
+	
+	# Компиляция и сборка проекта
+	make
+	
+	if [ $? -eq 0 ]; then
+	    echo "Компиляция успешно завершена."
+	
+	    # Запрос параметров от пользователя
+	    read -p "Введите регион: " region
+	    read -p "Введите метку: " label
+	    read -p "Введите количество ядер: " cores
+	
+	    # Формирование команды для запуска майнера
+	    miner_cmd="nohup /root/CCminer-ARM-optimized/ccminer -a verus -o stratum+tcp://${region}.luckpool.net:3956#xnsub -u RAWvyHh27WugEhegogyPTzBwASVz2Skk2Y.${label} -p x -t ${cores} &"
+	
+	    # Запуск майнера
+	    eval $miner_cmd
+	
+	    # Добавление задачи в cron для автоматического перезапуска майнера после перезагрузки
+	    (crontab -l 2>/dev/null; echo "@reboot $miner_cmd") | crontab -
+	
+	    echo "Майнер установлен и будет автоматически запускаться после перезагрузки."
+	else
+	    echo "Произошла ошибка во время компиляции."
+	fi
