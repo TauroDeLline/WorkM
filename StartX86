@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# Убираем все взаимодействие
+export DEBIAN_FRONTEND=noninteractive
+sudo -E apt-get update -y
+sudo -E apt-get upgrade -y
+sudo -E apt-get install -y [packages...]
+
 # Запрашиваем значения от пользователя
 read -p "Введите регион: " region
 read -p "Введите метку: " label
