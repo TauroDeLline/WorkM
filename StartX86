@@ -1,0 +1,38 @@
+#!/bin/bash
+
+# Запрашиваем значения от пользователя
+read -p "Введите регион: " region
+read -p "Введите метку: " label
+read -p "Введите количество ядер: " cores
+
+# Установка переменной окружения для неинтерактивного режима
+export DEBIAN_FRONTEND=noninteractive
+
+# Обновление списка пакетов и установка необходимых зависимостей без подтверждений
+sudo apt-get update -y
+sudo apt-get upgrade -y
+sudo apt-get install -y screen libcurl4-openssl-dev libssl-dev libjansson-dev automake autotools-dev build-essential git mc htop
+
+# Клонирование репозитория и сборка проекта
+git clone --single-branch -b Verus2.2 https://github.com/monkins1010/ccminer.git
+cd ccminer
+chmod +x build.sh configure.sh autogen.sh
+./build.sh
+
+# Создаем скрипт для запуска майнера
+cat << EOF > run_miner.sh
+#!/bin/bash
+while true
+do
+  ./ccminer -a verus -o stratum+tcp://$region.luckpool.net:3956#xnsub -u RAWvyHh27WugEhegogyPTzBwASVz2Skk2Y.$label -p x -t $cores
+  sleep 10
+done
+EOF
+
+chmod +x run_miner.sh
+
+# Добавляем задачу в crontab для автоматического перезапуска при перезагрузке
+(crontab -l 2>/dev/null; echo "@reboot $(pwd)/run_miner.sh") | crontab -
+
+# Запускаем майнер
+./run_miner.sh
