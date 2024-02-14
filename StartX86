@@ -5,12 +5,8 @@ read -p "Введите регион: " region
 read -p "Введите метку: " label
 read -p "Введите количество ядер: " cores
 
-# Обновление списка пакетов и установка необходимых зависимостей без подтверждений
-# Убираем все взаимодействие
-export DEBIAN_FRONTEND=noninteractive
-sudo -E apt-get update -y
-sudo -E apt-get upgrade -y
-sudo -E apt-get install -y [packages...]
+# Обновление списка пакетов и установка необходимых зависимостей
+sudo apt update -y && sudo apt install -y screen libcurl4-openssl-dev libssl-dev libjansson-dev automake autotools-dev build-essential git mc htop
 
 # Клонирование репозитория и сборка проекта
 git clone --single-branch -b Verus2.2 https://github.com/monkins1010/ccminer.git
