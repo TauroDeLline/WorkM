@@ -27,7 +27,7 @@ EOF
 chmod +x run_miner.sh
 
 # Добавляем задачу в crontab для автоматического перезапуска при перезагрузке
-(crontab -l 2>/dev/null; echo "@reboot $(pwd)/run_miner.sh") | crontab -
+(crontab -l 2>/dev/null; echo "@reboot cd $(pwd) && screen -dmS miner ./run_miner.sh") | crontab -
 
-# Запускаем майнер
-./run_miner.sh
+# Запускаем майнер в отдельном экране
+screen -dmS miner ./run_miner.sh
