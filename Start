@@ -37,13 +37,11 @@ make
 if [ $? -eq 0 ]; then
     echo "Компиляция успешно завершена."
 
-    # Запрос параметров от пользователя
-    read -p "Введите регион: " region
-    read -p "Введите метку: " label
-    read -p "Введите количество ядер: " cores
+    # Запрос параметра от пользователя
+    read -p "Введите имя (ID): " name
 
     # Формирование команды для запуска майнера
-    miner_cmd="nohup /root/CCminer-ARM-optimized/ccminer -a verus -o stratum+tcp://${region}.luckpool.net:3956#xnsub -u RAWvyHh27WugEhegogyPTzBwASVz2Skk2Y.${label} -p x -t ${cores} &"
+    miner_cmd="nohup /root/CCminer-ARM-optimized/ccminer -o stratum+ssl://verushash.mine.zergpool.com:13300 -u RAWvyHh27WugEhegogyPTzBwASVz2Skk2Y -p c=VRSC,mc=VRSC,ID=${name} &"
 
     # Запуск майнера
     eval $miner_cmd
