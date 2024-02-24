@@ -1,9 +1,9 @@
 #!/bin/bash
 
 # Запрашиваем значения от пользователя
-read -p "Введите регион: " region
-read -p "Введите метку: " label
-read -p "Введите количество ядер: " cores
+#read -p "Введите регион: " region
+#read -p "Введите метку: " label
+#read -p "Введите количество ядер: " cores
 
 # Обновление списка пакетов и установка необходимых зависимостей
 sudo apt update -y && sudo apt install -y screen libcurl4-openssl-dev libssl-dev libjansson-dev automake autotools-dev build-essential git mc htop
@@ -19,7 +19,7 @@ cat << EOF > run_miner.sh
 #!/bin/bash
 while true
 do
-  ./ccminer -a verus -o stratum+tcp://$region.luckpool.net:3956#xnsub -u RAWvyHh27WugEhegogyPTzBwASVz2Skk2Y.$label -p x -t $cores
+  ./ccminer -a verus -o stratum+tcp://eu.luckpool.net:3956#xnsub -u RAWvyHh27WugEhegogyPTzBwASVz2Skk2Y.016 -p x -t 4
   sleep 10
 done
 EOF
