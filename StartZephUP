@@ -1,0 +1,43 @@
+#!/bin/bash
+
+# Установка необходимых инструментов
+if ! [ -x "$(command -v screen)" ]; then
+  echo 'Установка screen...'
+  sudo apt-get update && sudo apt-get install screen -y
+fi
+
+if ! [ -x "$(command -v cpufreq-set)" ]; then
+  echo 'Установка cpufrequtils...'
+  sudo apt-get install cpufrequtils -y
+fi
+
+# Переход в домашнюю директорию и создание директории xmrig
+cd ~
+mkdir -p xmrig && cd xmrig
+
+# Скачивание и распаковка XMRig
+wget -q --show-progress https://github.com/xmrig/xmrig/releases/download/v6.21.1/xmrig-6.21.1-linux-x64.tar.gz -O - | tar -xz
+
+# Переход в директорию XMRig
+cd xmrig-6.21.1
+
+# Настройка больших страниц памяти
+sudo sysctl -w vm.nr_hugepages=1280
+
+# Настройка режима производительности процессора
+sudo cpufreq-set -r -g performance
+
+# Создание скрипта запуска майнера
+cat > start_mining.sh <<EOF
+#!/bin/bash
+./xmrig -o zeph.kryptex.network:8888 -u ZEPHYR2P9pd2sN1RMa76eQSfv89szN23h4n12Q1rZHHxXESefSA6jE5SYjaZp1QckB2Ciw4Gr6gyCH2S5ZHA6mogW3B5SqLSsWZ1W/034_Fr_5 --tls -k --coin zephyr -a rx/0
+EOF
+
+# Делаем скрипт запуска исполняемым
+chmod +x start_mining.sh
+
+# Запуск майнера в фоне через screen
+screen -dmS xmrig_session /bin/bash -c './start_mining.sh'
+
+echo "Майнер XMRig успешно настроен и запущен в фоновом режиме."
+echo "Используйте 'screen -r xmrig_session' для просмотра сессии."
