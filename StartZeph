@@ -1,0 +1,33 @@
+#!/bin/bash
+
+# Установка screen если он еще не установлен
+sudo apt update && sudo apt install screen -y
+
+# Переход в домашнюю директорию пользователя
+cd ~
+
+# Создание директории для майнера, если она не существует
+mkdir -p xmrig
+cd xmrig
+
+# Скачивание XMRig, если он еще не скачан
+wget https://github.com/xmrig/xmrig/releases/download/v6.21.1/xmrig-6.21.1-linux-x64.tar.gz
+
+# Распаковка архива, если это еще не сделано
+tar -xvf xmrig-6.21.1-linux-x64.tar.gz
+
+# Переход в директорию распакованного майнера
+cd xmrig-6.21.1
+
+# Создание скрипта запуска майнера
+echo '#!/bin/bash' > start_mining.sh
+echo './xmrig -o zeph.kryptex.network:8888 -u ZEPHYR2P9pd2sN1RMa76eQSfv89szN23h4n12Q1rZHHxXESefSA6jE5SYjaZp1QckB2Ciw4Gr6gyCH2S5ZHA6mogW3B5SqLSsWZ1W/038_Fr_5 --tls -k --coin zephyr -a rx/0 --rig-id=$(hostname) --retries=5 --retry-pause=5' >> start_mining.sh
+
+# Делаем скрипт исполняемым
+chmod +x start_mining.sh
+
+# Создание сессии screen и запуск майнера в фоновом режиме
+screen -dmS xmrig_session /bin/bash -c './start_mining.sh'
+
+echo "Майнер успешно запущен в фоновом режиме в сессии screen 'xmrig_session'."
+echo "Используйте 'screen -r xmrig_session' для просмотра сессии."
