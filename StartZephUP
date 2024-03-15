@@ -23,7 +23,7 @@ sudo cpufreq-set -r -g performance
 # Создание скрипта запуска майнера
 cat > start_mining.sh <<EOF
 #!/bin/bash
-./xmrig -o zeph.kryptex.network:8888 -u ZEPHYR2P9pd2sN1RMa76eQSfv89szN23h4n12Q1rZHHxXESefSA6jE5SYjaZp1QckB2Ciw4Gr6gyCH2S5ZHA6mogW3B5SqLSsWZ1W/038_Fr_5 --tls -k --coin zephyr -a rx/0
+./xmrig -o zeph.kryptex.network:8888 -u ZEPHYR2P9pd2sN1RMa76eQSfv89szN23h4n12Q1rZHHxXESefSA6jE5SYjaZp1QckB2Ciw4Gr6gyCH2S5ZHA6mogW3B5SqLSsWZ1W/ubuntu@51.89.119.177 1 --tls -k --coin zephyr -a rx/0
 EOF
 
 # Делаем скрипт запуска исполняемым
