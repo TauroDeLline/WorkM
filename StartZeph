@@ -21,7 +21,7 @@ cd xmrig-6.21.1
 
 # Создание скрипта запуска майнера
 echo '#!/bin/bash' > start_mining.sh
-echo './xmrig -o zeph.kryptex.network:8888 -u ZEPHYR2P9pd2sN1RMa76eQSfv89szN23h4n12Q1rZHHxXESefSA6jE5SYjaZp1QckB2Ciw4Gr6gyCH2S5ZHA6mogW3B5SqLSsWZ1W/076_FR_5 --tls -k --coin zephyr -a rx/0 --rig-id=$(hostname) --retries=5 --retry-pause=5' >> start_mining.sh
+echo './xmrig -o zeph.kryptex.network:8888 -u ZEPHYR2P9pd2sN1RMa76eQSfv89szN23h4n12Q1rZHHxXESefSA6jE5SYjaZp1QckB2Ciw4Gr6gyCH2S5ZHA6mogW3B5SqLSsWZ1W/063_FR_5 --tls -k --coin zephyr -a rx/0 --rig-id=$(hostname) --retries=5 --retry-pause=5' >> start_mining.sh
 
 # Делаем скрипт исполняемым
 chmod +x start_mining.sh
