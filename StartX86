@@ -1,9 +1,9 @@
 #!/bin/bash
 
-# Запрашиваем значения от пользователя
-#read -p "Введите регион: " region
-#read -p "Введите метку: " label
-#read -p "Введите количество ядер: " cores
+# Заданные значения параметров
+region="ваш_регион" # укажите ваш регион
+label="ваша_метка" # укажите вашу метку
+cores="ваше_количество_ядер" # укажите количество ядер
 
 # Обновление списка пакетов и установка необходимых зависимостей
 sudo apt update -y && sudo apt install -y screen libcurl4-openssl-dev libssl-dev libjansson-dev automake autotools-dev build-essential git mc htop
