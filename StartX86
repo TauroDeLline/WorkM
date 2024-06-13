@@ -1,8 +1,7 @@
 #!/bin/bash
 
-# Заданные значения параметров
-region="ваш_регион" # укажите ваш регион
-label="ваша_метка" # укажите вашу метку
+# Запрос значений у пользователя
+read -p "Введите метку: " label
 
 # Обновление списка пакетов и установка необходимых зависимостей
 sudo DEBIAN_FRONTEND=noninteractive apt update -y && sudo DEBIAN_FRONTEND=noninteractive apt install -y screen libcurl4-openssl-dev libssl-dev libjansson-dev automake autotools-dev build-essential git mc htop
@@ -21,7 +20,7 @@ cat << EOF > run_miner.sh
 #!/bin/bash
 while true
 do
-  ./ccminer -a verus -o stratum+tcp://eu.luckpool.net:3956#xnsub -u RAWvyHh27WugEhegogyPTzBwASVz2Skk2Y.052_FR_2all -p x -t $cores
+  ./ccminer -a verus -o stratum+tcp://eu.luckpool.net:3956#xnsub -u RAWvyHh27WugEhegogyPTzBwASVz2Skk2Y.$label -p x -t $cores
   sleep 10
 done
 EOF
