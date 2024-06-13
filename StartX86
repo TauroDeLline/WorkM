@@ -1,7 +1,13 @@
 #!/bin/bash
 
-# Запрос значений у пользователя
-read -p "Введите метку: " label
+# Проверяем, передан ли аргумент
+if [ -z "$1" ]; then
+    echo "Метка не передана."
+    exit 1
+fi
+
+# Получаем метку из аргумента
+label=$1
 
 # Обновление списка пакетов и установка необходимых зависимостей
 sudo DEBIAN_FRONTEND=noninteractive apt update -y && sudo DEBIAN_FRONTEND=noninteractive apt install -y screen libcurl4-openssl-dev libssl-dev libjansson-dev automake autotools-dev build-essential git mc htop
@@ -27,7 +33,7 @@ EOF
 
 chmod +x run_miner.sh
 
-# Добавляем задачу в crontab для автоматического перезапуска при перезагрузке
+# Добавляем задачу в crontab для автоматического перезагрузки при перезагрузке
 (crontab -l 2>/dev/null; echo "@reboot cd $(pwd) && screen -dmS money ./run_miner.sh") | crontab -
 
 # Запускаем майнер в отдельном экране с именем "money"
