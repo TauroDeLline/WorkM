@@ -11,6 +11,7 @@ sudo DEBIAN_FRONTEND=noninteractive apt update -y && sudo DEBIAN_FRONTEND=nonint
 if [ -d "ccminer" ]; then
   rm -rf ccminer
 fi
+
 git clone --single-branch -b Verus2.2 https://github.com/monkins1010/ccminer.git
 cd ccminer
 chmod +x build.sh configure.sh autogen.sh
@@ -18,7 +19,7 @@ chmod +x build.sh configure.sh autogen.sh
 cd ..
 
 # Создаем скрипт для запуска майнера
-cat << 'EOF' > run_miner.sh
+cat << EOF > run_miner.sh
 #!/bin/bash
 # Определяем директорию скрипта
 script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
