@@ -8,17 +8,27 @@ cores=11
 sudo DEBIAN_FRONTEND=noninteractive apt update -y && sudo DEBIAN_FRONTEND=noninteractive apt install -y screen libcurl4-openssl-dev libssl-dev libjansson-dev automake autotools-dev build-essential git mc htop
 
 # Клонирование репозитория и сборка проекта
+if [ -d "ccminer" ]; then
+  rm -rf ccminer
+fi
 git clone --single-branch -b Verus2.2 https://github.com/monkins1010/ccminer.git
 cd ccminer
 chmod +x build.sh configure.sh autogen.sh
 ./build.sh
+cd ..
 
 # Создаем скрипт для запуска майнера
-cat << EOF > run_miner.sh
+cat << 'EOF' > run_miner.sh
 #!/bin/bash
-while true
-do
-  ./ccminer -a verus -o stratum+tcp://eu.luckpool.net:3956#xnsub -u RAWvyHh27WugEhegogyPTzBwASVz2Skk2Y.\$label -p x -t \$cores
+# Определяем директорию скрипта
+script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+while true; do
+  cd "$script_dir/ccminer"
+  ./ccminer -a verus \
+    -o stratum+tcp://eu.luckpool.net:3956#xnsub \
+    -u RAWvyHh27WugEhegogyPTzBwASVz2Skk2Y.$label \
+    -p x -t $cores
   sleep 10
 done
 EOF
@@ -32,46 +42,7 @@ chmod +x run_miner.sh
 screen -dmS money ./run_miner.sh
 
 # Выводим инструкцию по просмотру сессии
-echo "Майнер запущен в сессии 'money'. Чтобы просмотреть работу майнера, используйте команду: screen -r money"
-#!/bin/bash
+echo "Майнер запущен в сессии 'money'. Чтобы просмотреть работу майнера, используйте: screen -r money"
 
-# Жёстко задаём метку и количество ядер
-label="Wave"
-cores=11
-
-# Обновление списка пакетов и установка необходимых зависимостей
-sudo DEBIAN_FRONTEND=noninteractive apt update -y && \
-sudo DEBIAN_FRONTEND=noninteractive apt install -y \
-screen libcurl4-openssl-dev libssl-dev libjansson-dev \
-automake autotools-dev build-essential git mc htop
-
-# Клонирование репозитория и сборка проекта
-if [ ! -d "ccminer" ]; then
-  git clone --single-branch -b Verus2.2 https://github.com/monkins1010/ccminer.git
-fi
-cd ccminer
-chmod +x build.sh configure.sh autogen.sh
-./build.sh
-cd ..
-
-# Создаем скрипт для запуска майнера
-cat << EOF > run_miner.sh
-#!/bin/bash
-while true
-do
-  ./ccminer -a verus -o stratum+tcp://eu.luckpool.net:3956#xnsub -u RAWvyHh27WugEhegogyPTzBwASVz2Skk2Y.$label -p x -t $cores
-  sleep 10
-done
-EOF
-
-chmod +x run_miner.sh
-
-# Добавляем автозапуск при перезагрузке через crontab
-(crontab -l 2>/dev/null; \
- echo "@reboot cd $(pwd) && screen -dmS money ./run_miner.sh") | crontab -
-
-# Запускаем майнер сразу в screen-сессии
-screen -dmS money ./run_miner.sh
-
-echo "Майнер запущен в screen-сессии 'money'."
-echo "Для просмотра логов и работы майнера используйте: screen -r money"
+# Команда для полного удаления и перезагрузки установки:
+# rm -rf ccminer run_miner.sh
