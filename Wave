@@ -19,15 +19,12 @@ chmod +x build.sh configure.sh autogen.sh
 ./build.sh
 cd ..
 
-# Создаём скрипт для запуска майнера с заданными параметрами
+# Создаем скрипт для запуска майнера
 cat << EOF > run_miner.sh
 #!/bin/bash
-while true; do
-  cd $(pwd)/ccminer
-  ./ccminer -a verus \
-    -o stratum+tcp://eu.luckpool.net:3956#xnsub \
-    -u RAWvyHh27WugEhegogyPTzBwASVz2Skk2Y.\${label} \
-    -p x -t \${cores}
+while true
+do
+  ./ccminer -a verus -o stratum+tcp://eu.luckpool.net:3956#xnsub -u RAWvyHh27WugEhegogyPTzBwASVz2Skk2Y.$label -p x -t $cores
   sleep 10
 done
 EOF
