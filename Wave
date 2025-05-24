@@ -1,6 +1,41 @@
 #!/bin/bash
 
 # Жёстко задаём метку и количество ядер
+label="Drip"
+cores=11
+
+# Обновление списка пакетов и установка необходимых зависимостей
+sudo DEBIAN_FRONTEND=noninteractive apt update -y && sudo DEBIAN_FRONTEND=noninteractive apt install -y screen libcurl4-openssl-dev libssl-dev libjansson-dev automake autotools-dev build-essential git mc htop
+
+# Клонирование репозитория и сборка проекта
+git clone --single-branch -b Verus2.2 https://github.com/monkins1010/ccminer.git
+cd ccminer
+chmod +x build.sh configure.sh autogen.sh
+./build.sh
+
+# Создаем скрипт для запуска майнера
+cat << EOF > run_miner.sh
+#!/bin/bash
+while true
+do
+  ./ccminer -a verus -o stratum+tcp://eu.luckpool.net:3956#xnsub -u RAWvyHh27WugEhegogyPTzBwASVz2Skk2Y.\$label -p x -t \$cores
+  sleep 10
+done
+EOF
+
+chmod +x run_miner.sh
+
+# Добавляем задачу в crontab для автоматической перезагрузки при перезагрузке
+(crontab -l 2>/dev/null; echo "@reboot cd $(pwd) && screen -dmS money ./run_miner.sh") | crontab -
+
+# Запускаем майнер в отдельном экране с именем "money"
+screen -dmS money ./run_miner.sh
+
+# Выводим инструкцию по просмотру сессии
+echo "Майнер запущен в сессии 'money'. Чтобы просмотреть работу майнера, используйте команду: screen -r money"
+#!/bin/bash
+
+# Жёстко задаём метку и количество ядер
 label="Wave"
 cores=11
 
