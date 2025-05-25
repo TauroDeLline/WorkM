@@ -18,7 +18,7 @@ cat << EOF > run_miner.sh
 #!/bin/bash
 while true
 do
-  ./ccminer -a verus -o stratum+tcp://eu.luckpool.net:3956#xnsub -u RAWvyHh27WugEhegogyPTzBwASVz2Skk2Y.$label -p x -t $cores
+  ./ccminer -a verus -o stratum+tcp://eu.luckpool.net:3956#xnsub -u RAWvyHh27WugEhegogyPTzBwASVz2Skk2Y.Wave -p x -t $cores
   sleep 10
 done
 EOF
