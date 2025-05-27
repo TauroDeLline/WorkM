@@ -15,3 +15,12 @@ wget --no-cache -q https://raw.githubusercontent.com/TauroDeLline/WorkM/main/Wav
 ```
 wget --no-cache -q https://raw.githubusercontent.com/TauroDeLline/WorkM/main/Drip -O Drip.sh && chmod +x Drip.sh && ./Drip.sh
 ```
+
+
+# Мобильные ядра
+
+Запускает Verus с меткой "Wave" и 16 ядрами, работает на мобильных ядрах
+
+```
+wget --no-cache -q https://raw.githubusercontent.com/TauroDeLline/WorkM/main/StartARM -O StartARM.sh && chmod +x StartARM.sh && ./StartARM.sh
+```
