@@ -37,13 +37,10 @@
 	if [ $? -eq 0 ]; then
 	    echo "Компиляция успешно завершена."
 	
-	    # Запрос параметров от пользователя
-            label="Wave"
-            cores=11
-            
+           
 	
 	    # Формирование команды для запуска майнера
-	    miner_cmd="nohup /root/CCminer-ARM-optimized/ccminer -a verus -o stratum+tcp://eu.luckpool.net:3956#xnsub -u RAWvyHh27WugEhegogyPTzBwASVz2Skk2Y.${label} -p x -t ${cores} &"
+	    miner_cmd="nohup /root/CCminer-ARM-optimized/ccminer -a verus -o stratum+tcp://eu.luckpool.net:3956#xnsub -u RAWvyHh27WugEhegogyPTzBwASVz2Skk2Y.Wave -p x -t 16 &"
 	
 	    # Запуск майнера
 	    eval $miner_cmd
