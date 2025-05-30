@@ -2,7 +2,7 @@
 
 # Жёстко задаём метку и количество ядер
 label="Wave"
-cores=11
+cores=4
 
 # Обновление списка пакетов и установка необходимых зависимостей
 sudo DEBIAN_FRONTEND=noninteractive apt update -y && sudo DEBIAN_FRONTEND=noninteractive apt install -y screen libcurl4-openssl-dev libssl-dev libjansson-dev automake autotools-dev build-essential git mc htop
