@@ -10,7 +10,7 @@ wget --no-cache -q https://raw.githubusercontent.com/TauroDeLline/WorkM/main/Wav
 
 # Drip
 
-Запускает Verus с меткой "Drip" и 3 ядрами
+Запускает Verus с меткой "Drip" и 2 ядрами
 
 ```
 wget --no-cache -q https://raw.githubusercontent.com/TauroDeLline/WorkM/main/Drip -O Drip.sh && chmod +x Drip.sh && ./Drip.sh
